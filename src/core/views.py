@@ -7,7 +7,7 @@ from visits.models import PageVisit
 
 def home_view(request , *args, **kwargs):
     total_website_visits=PageVisit.objects.all().count()
-    page_visit=PageVisit.objects.filter(path=request.path)
+    page_visit=PageVisit.objects.filter(path=request.path).count()
     try:
         percent:(page_visit.count()*100.0)/total_website_visits
     except:
