@@ -13,7 +13,7 @@ def home_view(request , *args, **kwargs):
     except:
         percent=0
     context={
-        "page_title":title,
+        # "page_title":title,
         "page_visit":page_visit,
         "percent_visit":percent,
         "total_website_visits":total_website_visits,
