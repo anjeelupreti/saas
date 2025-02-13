@@ -9,6 +9,8 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
+import os 
+
 
 from pathlib import Path
 
@@ -23,7 +25,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-n(htmkkohzl33!-r$*xr+ghb=1)17s!36omk#2y02-^_9k$78r'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+
+#to get system variables 
+DEBUG = os.getenv('DJANGO_DEBUG', 'False').strip().lower() == 'true'
 
 ALLOWED_HOSTS = [
     ".railway.app",#https://saas.prod.railway.app
