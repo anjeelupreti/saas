@@ -29,6 +29,7 @@ SECRET_KEY=config('DJANGO_SECRET_KEY')
 
 #to get system variables 
 #Method 1
+# DEBUG=True
 DEBUG = os.getenv('DJANGO_DEBUG', 'False').strip().lower() == 'true'
 #Method 2
 DEBUG=config('DJANGO_DEBUG',cast=bool)
