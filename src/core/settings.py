@@ -98,23 +98,26 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-CONN_MAX_AGE=config('CONN_MAX_AGE',cast=int , default=30)
-DATABASE_URL=config('DATABASE_URL',default=None,cast=str)
-if DATABASE_URL is not None:
-    import dj_database_url
-    DATABASES = {
-    'default':dj_database_url.config(
-        default=DATABASE_URL,
-        conn_max_age=CONN_MAX_AGE,
-        conn_health_checks=True,
+import dj_database_url
 
-    )
+CONN_MAX_AGE = config('CONN_MAX_AGE', cast=int, default=30)
+DATABASE_URL = config('DATABASE_URL', default=None)
+
+if DATABASE_URL:
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=DATABASE_URL,
+            conn_max_age=CONN_MAX_AGE,
+            conn_health_checks=True,
+            ssl_require=True  
+        )
+    }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
 
 
