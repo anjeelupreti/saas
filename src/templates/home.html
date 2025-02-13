@@ -3,6 +3,11 @@
 {% block head_title %}{{ block.super }} - Home{% endblock head_title %}
 
 {% block content %}
-{}
+    <p>Website Visit: {{ total_website_visits }}</p>
+    <p>This Page Visit: {{ page_visit }}</p>
+    {% if total_website_visits > 0 %}
+        <p>Percentage: {{ percent_visit }}%</p>
+    {% else %}
+        <p>No visits recorded yet.</p>
+    {% endif %}
 {% endblock content %}
- 
