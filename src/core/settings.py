@@ -29,22 +29,22 @@ SECRET_KEY=config('DJANGO_SECRET_KEY')
 
 #to get system variables 
 #Method 1
-# DEBUG=True
-DEBUG = os.getenv('DJANGO_DEBUG', 'False').strip().lower() == 'true'
+DEBUG=True
+# DEBUG = os.getenv('DJANGO_DEBUG', 'False').strip().lower() == 'true'
 #Method 2
-DEBUG=config('DJANGO_DEBUG',cast=bool)
-# print(DEBUG)
+# DEBUG=config('DJANGO_DEBUG',cast=bool)
+# # print(DEBUG)
 
-ALLOWED_HOSTS = [
-    ".railway.app",#https://saas.prod.railway.app
-]
-if DEBUG:
-    if DEBUG:
-        ALLOWED_HOSTS+=[
-            "127.0.0.1",
-            "localhost",
+# ALLOWED_HOSTS = [
+#     ".railway.app", #https://saas.prod.railway.app
+# ]
+# if DEBUG:
 
-        ]
+#     ALLOWED_HOSTS+=[
+#         "127.0.0.1",
+#         "localhost",
+
+#         ]
 
 
 # Application definition
@@ -89,7 +89,7 @@ TEMPLATES = [
         },
     },
 ]
-import os
+
 print("BASE_DIR:", BASE_DIR)
 
 
