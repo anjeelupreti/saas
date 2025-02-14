@@ -32,21 +32,19 @@ SECRET_KEY=config('DJANGO_SECRET_KEY')
 # DEBUG=True
 # DEBUG = os.getenv('DJANGO_DEBUG', 'False').strip().lower() == 'true'
 #Method 2
-DEBUG=config('DJANGO_DEBUG',cast=bool)
-# # print(DEBUG)
+DEBUG=config('DJANGO_DEBUG', cast=bool)
+print("DEBUG:", DEBUG)  # Debugging output
 
+ALLOWED_HOSTS = [".railway.app"]
 
 if DEBUG:
-
-    ALLOWED_HOSTS+=[
+    ALLOWED_HOSTS = [
         "127.0.0.1",
         "localhost",
+        ".railway.app",
+    ]
 
-        ]
-else:
-    ALLOWED_HOSTS = [
-    ".railway.app", #https://saas.prod.railway.app
-]
+print("ALLOWED_HOSTS:", ALLOWED_HOSTS)  # Debugging output
 
 
 # Application definition
@@ -61,6 +59,8 @@ INSTALLED_APPS = [
 
     #user-installed apps
     'visits',
+    'commands',
+    
     
 ]
 
@@ -160,6 +160,19 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_FILES_BASE_DIR=BASE_DIR / 'static'
+STATIC_FILES_VENDOR_DIR=STATIC_FILES_BASE_DIR / 'vendors'
+
+#source (s)
+STATICFILES_DIRS=[
+    STATIC_FILES_BASE_DIR
+
+]
+#output (s)
+STATIC_ROOT =BASE_DIR.parent/'local-static'
+# if not DEBUG:
+#     STATIC_ROOT =BASE_DIR/'prod-static'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

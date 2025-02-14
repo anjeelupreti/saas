@@ -4,6 +4,7 @@
 
 {% block content %}
 <p> Good Morning <b>{{request.user}} !</b></p>
+
     <p>Website Visit: {{ total_website_visits }}</p>
     <p>This Page Visit: {{ page_visit }}</p>
     {% if total_website_visits > 0 %}

@@ -124,6 +124,10 @@ __pypackages__/
 celerybeat-schedule
 celerybeat.pid
 
+#ignore static vendors files
+src/static/vendors
+local-static
+
 # SageMath parsed files
 *.sage.py
 
