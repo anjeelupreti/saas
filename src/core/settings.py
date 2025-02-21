@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     #user-installed apps
     'visits',
     'commands',
+    'whitenoise.runserver_nostatic',
     
     
 ]
