@@ -18,7 +18,18 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+#Email Configuration
+EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST=config('EMAIL_HOST',cast=str,default='smtp.gmail.com')
+EMAIL_PORT=config('EMAIL_PORT',cast=str,default='587')
+EMAIL_HOST_USER=config('EMAIL_HOST_USER',cast=str,default='None')
+EMAIL_HOST_PASSWORD=config('EMAIL_HOST_PASSWORD',cast=str,default='None')
+EMAIL_USE_TLS=config('EMAIL_USE_TLS',cast=bool,default='True')
+EMAIL_USE_SSL=config('EMAIL_USE_SSL',cast=bool,default='False')
 
+#TESTING
+ADMINS=[('Anjeel','anjeelupretiofficial@gmail.com')]
+MANAGERS=ADMINS
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
@@ -33,7 +44,7 @@ SECRET_KEY=config('DJANGO_SECRET_KEY')
 # DEBUG = os.getenv('DJANGO_DEBUG', 'False').strip().lower() == 'true'
 #Method 2
 DEBUG=config('DJANGO_DEBUG', cast=bool)
-print("DEBUG:", DEBUG)  # Debugging output
+# print("DEBUG:", DEBUG)  # Debugging output
 
 ALLOWED_HOSTS = [".railway.app"]
 
@@ -44,7 +55,7 @@ if DEBUG:
         ".railway.app",
     ]
 
-print("ALLOWED_HOSTS:", ALLOWED_HOSTS)  # Debugging output
+# print("ALLOWED_HOSTS:", ALLOWED_HOSTS)  # Debugging output
 
 
 # Application definition
@@ -57,13 +68,40 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    #user-installed apps
+    # Third-party apps
+    'whitenoise.runserver_nostatic',
+    'slippers',  # This should be placed before allauth_ui
+    "widget_tweaks",  # UI tweaks for forms
+
+    # Django-Allauth (Core)
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+     # 'allauth.socialaccount.providers.microsoft',
+    # 'allauth.socialaccount.providers.linkedin',
+    # 'allauth.socialaccount.providers.facebook',
+    # 'allauth.socialaccount.providers.github',
+    # 'allauth.socialaccount.providers.google',
+
+    # Django-Allauth UI
+    "allauth_ui",
+    
+    # Custom apps
     'visits',
     'commands',
-    'whitenoise.runserver_nostatic',
-    
-    
+
+
 ]
+
+   
+    
+    
+    
+    
+
+    
+    
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -74,8 +112,15 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    #django-allauth
+    "allauth.account.middleware.AccountMiddleware",
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    
 ]
+
+SOCIALACCOUNT_PROVIDERS = {
+  
+}
 
 ROOT_URLCONF = 'core.urls'
 
@@ -145,6 +190,29 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+#django allauth Config
+AUTHENTICATION_BACKENDS = [
+    
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by email
+    'allauth.account.auth_backends.AuthenticationBackend',
+    
+]
+# Redirect users after login
+LOGIN_REDIRECT_URL = "/"
+
+ACCOUNT_LOGIN_METHOD={'email'}
+ACCOUNT_EMAIL_VERIFICATION='mandatory'
+ACCOUNT_EMAIL_REQUIRED=True
+ACCOUNT_EMAIL_SUBJECT_PREFIX="[CodeVault]"
+
+
+# Redirect users after logout
+LOGOUT_REDIRECT_URL = "/"
+
 
 
 # Internationalization

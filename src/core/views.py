@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from visits.models import PageVisit
 
-def home_view(request, *args, **kwargs):
+def home(request, *args, **kwargs):
     # First, create the visit
     PageVisit.objects.create(path=request.path)
 
