@@ -16,8 +16,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
-from .views import home
-from user.views import login_view, register_view
+from .views import home,dashboard
+from user.views import account_logout
 
 urlpatterns = [
     #admin
@@ -25,11 +25,14 @@ urlpatterns = [
 
     #pages
     path('',home,name='home'),
+    path('dashboard/',dashboard,name='dashboard'),
+
     
     #authentication
-    path('login/',login_view, name='login'),
-    path('register/',register_view ,name='register'),
-    path('accounts/', include('allauth.urls')),
+    # path('login/',login_view, name='login'),
+    # path('register/', register_page, name='register')
+    path('accounts/', include('allauth.urls')), 
+    path('accounts/logout/',account_logout , name='account_logout'), 
 
 
 

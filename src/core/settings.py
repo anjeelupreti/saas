@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 import os 
 from decouple import config
-
+import sentry_sdk
 
 from pathlib import Path
 
@@ -38,6 +38,14 @@ MANAGERS=ADMINS
 SECRET_KEY=config('DJANGO_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 
+
+#sentry integration 
+sentry_sdk.init(
+    dsn=config('DSN'),
+    # Add data like request headers and IP for users,
+    # see https://docs.sentry.io/platforms/python/data-management/data-collected/ for more info
+    send_default_pii=True,
+)
 #to get system variables 
 #Method 1
 # DEBUG=True
@@ -69,14 +77,17 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # Third-party apps
-    'whitenoise.runserver_nostatic',
-    'slippers',  # This should be placed before allauth_ui
-    "widget_tweaks",  # UI tweaks for forms
+    "whitenoise.runserver_nostatic",
 
     # Django-Allauth (Core)
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
+    # "allauth_ui",
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    "widget_tweaks",
+    # "slippers", 
+    'crispy_forms',
+    #  'compressor',
      # 'allauth.socialaccount.providers.microsoft',
     # 'allauth.socialaccount.providers.linkedin',
     # 'allauth.socialaccount.providers.facebook',
@@ -84,7 +95,7 @@ INSTALLED_APPS = [
     # 'allauth.socialaccount.providers.google',
 
     # Django-Allauth UI
-    "allauth_ui",
+    
     
     # Custom apps
     'visits',
@@ -93,17 +104,13 @@ INSTALLED_APPS = [
 
 ]
 
-   
-    
-    
-    
-    
+SITE_ID = 1
 
     
-    
-
+ALLAUTH_UI_THEME = "light"
 
 MIDDLEWARE = [
+    
     'django.middleware.security.SecurityMiddleware',
      #Whitenoise Integration
     "whitenoise.middleware.WhiteNoiseMiddleware",
@@ -115,6 +122,8 @@ MIDDLEWARE = [
     #django-allauth
     "allauth.account.middleware.AccountMiddleware",
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
+
     
 ]
 
@@ -128,7 +137,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [BASE_DIR / 'templates'],
-        'APP_DIRS': True,
+        'APP_DIRS':True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -140,7 +149,7 @@ TEMPLATES = [
     },
 ]
 
-print("BASE_DIR:", BASE_DIR)
+# print("BASE_DIR:", BASE_DIR)
 
 
 WSGI_APPLICATION = 'core.wsgi.application'
@@ -201,8 +210,10 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend',
     
 ]
+
+LOGIN_URL = '/accounts/login/'
 # Redirect users after login
-LOGIN_REDIRECT_URL = "/"
+LOGIN_REDIRECT_URL = '/dashboard/'
 
 ACCOUNT_LOGIN_METHOD={'email'}
 ACCOUNT_EMAIL_VERIFICATION='mandatory'
@@ -233,6 +244,12 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATIC_FILES_BASE_DIR=BASE_DIR / 'static'
 STATIC_FILES_VENDOR_DIR=STATIC_FILES_BASE_DIR / 'vendors'
+
+COMPRESS_ROOT = BASE_DIR / 'static'
+
+COMPRESS_ENABLED = True
+
+STATICFILES_FINDERS = ('compressor.finders.CompressorFinder',)
 
 #source (s)
 STATICFILES_DIRS=[

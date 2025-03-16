@@ -1,0 +1,61 @@
+{% load allauth static %}
+
+<!-- field.html -->
+<div class="mb-4">
+    <!-- Field Label -->
+    {% if attrs.type != "checkbox" and attrs.type != "radio" %}
+        <label for="{{ attrs.id }}" class="block text-sm font-medium text-gray-900 dark:text-white">
+            {% slot label %}
+            {% endslot %}
+        </label>
+    {% endif %}
+
+    <!-- Field Input -->
+    {% if attrs.type == "textarea" %}
+        <textarea
+            {% if attrs.required %}required{% endif %}
+            {% if attrs.rows %}rows="{{ attrs.rows }}"{% endif %}
+            {% if attrs.disabled %}disabled{% endif %}
+            {% if attrs.readonly %}readonly{% endif %}
+            {% if attrs.name %}name="{{ attrs.name }}"{% endif %}
+            {% if attrs.id %}id="{{ attrs.id }}"{% endif %}
+            {% if attrs.placeholder %}placeholder="{{ attrs.placeholder }}"{% endif %}
+            class="w-full p-2.5 border rounded-lg text-gray-900 bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+        >{% slot value %}{% endslot %}</textarea>
+    {% else %}
+        <input
+            {% if attrs.required %}required{% endif %}
+            {% if attrs.disabled %}disabled{% endif %}
+            {% if attrs.readonly %}readonly{% endif %}
+            {% if attrs.checked %}checked{% endif %}
+            {% if attrs.name %}name="{{ attrs.name }}"{% endif %}
+            {% if attrs.id %}id="{{ attrs.id }}"{% endif %}
+            {% if attrs.placeholder %}placeholder="{{ attrs.placeholder }}"{% endif %}
+            {% if attrs.autocomplete %}autocomplete="{{ attrs.autocomplete }}"{% endif %}
+            {% if attrs.value is not None %}value="{{ attrs.value }}"{% endif %}
+            type="{{ attrs.type }}"
+            class="w-full p-2.5 border rounded-lg text-gray-900 bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+        >
+    {% endif %}
+
+    <!-- Field Errors -->
+    {% if attrs.errors %}
+        {% include 'allauth/elements/alert.html' with message=attrs.errors message.tags="error" %}
+    {% endif %}
+
+    <!-- Field Help Text -->
+    {% if slots.help_text %}
+        <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+            {% slot help_text %}
+            {% endslot %}
+        </p>
+    {% endif %}
+
+    <!-- Checkbox and Radio Button Labels -->
+    {% if attrs.type == "checkbox" or attrs.type == "radio" %}
+        <label for="{{ attrs.id }}" class="ml-2 text-sm text-gray-900 dark:text-white">
+            {% slot label %}
+            {% endslot %}
+        </label>
+    {% endif %}
+</div>

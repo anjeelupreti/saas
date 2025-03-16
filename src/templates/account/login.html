@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load allauth account %}
+{% load static %}
+
+{% block title %}
+    {% trans "CodeVault: Sign In" %}
+{% endblock %}
+
+
+
+{% block content %}
+<body class="bg-gray-900">
+    {% if form.non_field_errors %}
+    <div class="w-full flex justify-end   ">
+    <div id="alert-error" class="fixed top-4 right-8 flex items-center p-4 mb-4 text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 shadow-lg" role="alert">
+        <svg class="shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 1 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+        </svg>
+        <div class="ms-3 text-sm font-medium text-right">
+            {% for error in form.non_field_errors %}
+                {{ error }}
+            {% endfor %}
+        </div>
+        <button type="button" class="ms-auto -mx-1.5 -my-1.5 bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800 dark:text-red-400 dark:hover:bg-gray-700" data-dismiss-target="#alert-error" aria-label="Close">
+            <span class="sr-only">Close</span>
+            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+            </svg>
+        </button>
+    </div>
+</div>
+{% endif %}
+
+    <section class="h-screen flex items-center justify-between px-16">
+        <!-- Left Side: Logo & CodeVault Name -->
+        <div class="w-1/2 flex flex-col items-center justify-center h-full">
+            <img class="w-56 h-56 mb-6" src="{% static 'vendors/img/codevault-logo.png' %}" alt="CodeVault Logo">
+            <h1 class="text-6xl font-extrabold text-white">CodeVault</h1>
+        </div>
+
+        <!-- Right Side: Sign-in Form -->
+        <div class="w-1/2 flex justify-center">
+            <div class="w-full max-w-md bg-white rounded-lg shadow-lg dark:border dark:bg-gray-800 dark:border-gray-700 p-8 space-y-6">
+                <h1 class="text-2xl font-bold text-gray-900 dark:text-white">{% trans "Sign In" %}</h1>
+
+                {% if not SOCIALACCOUNT_ONLY %}
+                    {% setvar link %}
+                        <a href="{{ signup_url }}" class="font-medium text-blue-500 hover:underline dark:text-blue-400">
+                    {% endsetvar %}
+                    {% setvar end_link %}
+                        </a>
+                    {% endsetvar %}
+                    <p class="text-sm font-light text-gray-500 dark:text-gray-400">
+                        {% blocktranslate %}If you have not created an account yet, then please {{ link }}sign up{{ end_link }} first.{% endblocktranslate %}
+                    </p>
+
+                    {% url 'account_login' as login_url %}
+                    <form method="post" action="{{ login_url }}">
+                        {% csrf_token %}
+                        <div class="space-y-4">
+                            <!-- Username Field -->
+                            <div>
+                                <label for="id_login" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                    {% trans "Username" %}
+                                </label>
+                                <input type="text" name="login" id="id_login" class="w-full p-2.5 border rounded-lg text-gray-900 bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:text-white" required>
+                                {% if form.login.errors %}
+                                    {% include 'allauth/elements/alert.html' with message=form.login.errors tags="error" %}
+                                {% endif %}
+                            </div>
+
+                            <!-- Password Field -->
+                            <div>
+                                <label for="id_password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                    {% trans "Password" %}
+                                </label>
+                                <input type="password" name="password" id="id_password" class="w-full p-2.5 border rounded-lg text-gray-900 bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:text-white" required>
+                                {% if form.password.errors %}
+                                    {% include 'allauth/elements/alert.html' with message=form.password.errors tags="error" %}
+                                {% endif %}
+                            </div>
+
+                            <!-- Remember Me Checkbox -->
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-start">
+                                    <input id="id_remember" name="remember" type="checkbox" class="w-4 h-4 border bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
+                                    <label for="id_remember" class="ml-2 text-gray-500 dark:text-gray-300">{% trans "Remember me" %}</label>
+                                </div>
+                                <a href="{% url 'account_reset_password' %}" class="text-sm font-medium text-blue-500 hover:underline dark:text-blue-400">
+                                    {% trans "Forgot password?" %}
+                                </a>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <button type="submit" class="w-full text-white bg-blue-600 hover:bg-blue-700 rounded-lg px-5 py-2.5">
+                                {% trans "Sign In" %}
+                            </button>
+                        </div>
+                    </form>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+</body>
+{% endblock content %}

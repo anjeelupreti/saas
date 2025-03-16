@@ -1,5 +1,13 @@
 from django.shortcuts import render
 from visits.models import PageVisit
+from django.contrib.auth.decorators import login_required
+
+@login_required
+def dashboard(request, *args, **kwargs):
+    context = {}
+    return render(request, "dashboard.html", context)
+
+
 
 def home(request, *args, **kwargs):
     # First, create the visit
@@ -22,3 +30,4 @@ def home(request, *args, **kwargs):
     }
 
     return render(request, "home.html", context)
+

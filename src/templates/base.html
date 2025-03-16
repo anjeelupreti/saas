@@ -1,15 +1,27 @@
+{% load allauth %} 
+{% load i18n %}
+{% load static %}
+<!DOCTYPE html>
 <html>
-    <head>
-        <title>{% block head_title %}Saas{% endblock head_title %}</title>
-        {% include 'base/css.html' %}
-    </head>
-    <body>
-        {% include 'base/navbar.html' %}
+<head>
+    <title>{% block head_title %}CodeVault{% endblock head_title %}</title>
+    {% include 'base/css.html' %}
+</head>
+<body>
 
+    <!-- Messages -->
+    {% include 'base/messages.html' %}
+
+    <!-- Main Content -->
+    <main>
         {% block content %}
-        <h1>Base</h1> 
+        <!-- Content will be injected here -->
         {% endblock content %}
-        {% include 'base/js.html' %}
+    </main>
 
-    </body>
+    <!-- Footer (if any) -->
+
+    <!-- JavaScript -->
+    {% include 'base/js.html' %}
+</body>
 </html>

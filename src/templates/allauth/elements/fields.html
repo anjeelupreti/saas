@@ -1,0 +1,27 @@
+{% load static %}
+
+<!-- fields.html -->
+{% for field in form %}
+    <div class="mb-4">
+        <!-- Field Label -->
+        {% if not unlabeled %}
+            <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-900 dark:text-white">
+                {{ field.label }}
+            </label>
+        {% endif %}
+
+        <!-- Field Input -->
+        {{ field }}
+
+        <!-- Field Errors -->
+        {% if field.errors %}
+        {% include 'allauth/elements/alert.html' with message=field.errors tags="error" %}        {% endif %}
+
+        <!-- Field Help Text -->
+        {% if field.help_text %}
+            <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+                {{ field.help_text }}
+            </p>
+        {% endif %}
+    </div>
+{% endfor %}
